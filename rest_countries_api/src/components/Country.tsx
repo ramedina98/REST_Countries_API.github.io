@@ -1,26 +1,18 @@
-//import React, { useState, useEffect } from 'react';
-//TODO: esta es la siguiente parte para trabajar...
+import React, { useState } from 'react';//TODO: si no se usa elimnar
+import useCountryData from '../hooks/useApiData';
+import { useParams } from 'react-router-dom';
+
 const YourComponent: React.FC = () => {
-    //const [data, setData] = useState<any>(null);
-
-    /*async function fetcData() {
-        try {
-            const response = await fetch('https://restcountries.com/v3.1/all');
-            const result = await response.json();
-            setData(result);
-
-        } catch (error) {
-            console.log('Error: ', error);
-        }
-    }
-
-    useEffect(() => {
-        fetcData();
-    }, []);*/
+    //function to search for a specific country...
+    const { searchByCca3 } = useCountryData();
+    //we get the id fromt the url...
+    const { id } = useParams<{id:string}>();
+    //we are looking for a specific country...
+    const country = id ? searchByCca3(id):null;
 
     return (
         <div>
-            <h1>Pis</h1>
+            <h1 className='text-center text-red-400'>{country?.name.common}</h1>
         </div>
     )
 }

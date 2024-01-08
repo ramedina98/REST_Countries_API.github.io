@@ -1,29 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; //TODO:borrar lo que no se ocupe...
 import { Link } from 'react-router-dom';
+import useCountryData from '../hooks/useApiData';
 
 const YourComponent: React.FC = () => {
     //TODO: el codigo que esta debajo es para consumir la api...
-
-    const [data, setData] = useState<any>(null);
-
-    async function fetcData() {
-        try {
-            const response = await fetch('https://restcountries.com/v3.1/all');
-            const result = await response.json();
-            setData(result);
-            console.log(result);
-
-        } catch (error) {
-            console.log('Error: ', error);
-        }
-    }
-
-    useEffect(() => {
-        fetcData();
-    }, []);
-
-    const selectCountry = data;
-
+    const { data, loading, error} = useCountryData(); 
+    
     //code needed to show and hide the drop menu...
     const [showMenu, setShowMenu] = useState(false);
     const toggleDropMenu = () => {
@@ -68,8 +50,8 @@ const YourComponent: React.FC = () => {
             {/*the next part contains the carts that brings the flag and part of 
             the information of the countries...*/}
             <div className='py-6 flex items-center justify-center flex-wrap gap-9'>
-                {selectCountry && selectCountry.map((country:any) => (
-                    <Link to={'/country/${country.cca3}'}>
+                {data && data.map((country:any) => (
+                    <Link to={`/country/${country.cca3}`}>
                         <div key={country.cca3} className='bg-white dark:bg-gray-800 w-300 h-cartH rounded flex flex-col items-center justify-center shadow-sm cursor-pointer dark:border-gray-600'>
                             <div className='w-all h-half'>
                                 <img src={country.flags.png}

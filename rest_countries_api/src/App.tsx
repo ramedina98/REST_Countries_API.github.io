@@ -1,10 +1,11 @@
 /*here we have to buil all the main structure 
 of the app...*/
 //import { useState } from 'react'
-import './css/App.css'
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import '@fortawesome/fontawesome-free/css/all.min.css'; 
 import Countries from './components/ListOfCountries.tsx'; 
 import Country from './components/Country.tsx';
+import OtherNav from './components/OtherNav.tsx';
 import { useEffect, useState } from 'react';
 
 function App() {
@@ -67,8 +68,47 @@ function App() {
       {/*every page needs its footer*/}
       {/*TODO: Hay que buscar si hay recursos en internet para ver y desarrollar
       un muy buen footer para esta pagina...*/}
-      <footer className='p-5'>
-        <h2 className='text-center'>Ricardo Abraham Medina Martin Del Campo</h2>
+      <footer>
+        <div className='cont_cards_nav'>
+          <OtherNav/>
+        </div>
+        <div className='cont_redes_legal_terms'>
+          <div className='redesNterms'>
+            <div className='legal'>
+              <p>
+                <span>Where in the world?</span> © 2023 Where in the world? México S.A. de C.V., SFP (WITW Mexico) is a educational institution. 
+                C.V., SFP (WITW Mexico) is a educational institution authorized and supervised by the National 
+                authorized and supervised by the National SEP and 
+                educational and SEP Commission and other educational authorities, 
+                under the education Law.
+              </p>
+            </div>
+            <div className='redes'>
+              <ul>
+                <li><a href='#'><i className="fab fa-facebook"></i></a></li>
+                <li><a href='https://instagram.com/richard_b_stone?utm_source=qr' target='_blank'><i className="fab fa-instagram"></i></a></li>
+                <li><a href='https://www.linkedin.com/in/ricardo-abraham-medina-marti-del-campo-8baa7827a/' target='_blank'><i className="fab fa-linkedin"></i></a></li>
+                <li><a href='#'><i className="fab fa-twitter"></i></a></li>
+                <li><a href='#'><i className="fab fa-youtube"></i></a></li>
+                <li><a href='#'><i className="fab fa-tiktok"></i></a></li>
+              </ul>
+            </div>
+          </div>
+          <div className='termsNmore'>
+            <div className='address'>
+              <p>Where in the world? México education S.A. de C.V. S.F.P. Ave. 
+                Presidente Masaryk No. 111, 7th Floor, Col. 
+                IV Sección, CP 11550, Miguel Hidalgo, CDMX.
+              </p>
+            </div>
+            <div className='other_things'>
+              <ul>
+                <li>Costs and commissions</li>
+                <li>Contracts</li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </footer>
     </>
   )

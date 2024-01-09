@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'; //TODO:borrar lo que no se ocupe...
 import { Link } from 'react-router-dom';
+import CountrySkeleton from './countrySkeleton';
 import useCountryData from '../hooks/useApiData';
 
 const YourComponent: React.FC = () => {
@@ -10,6 +11,11 @@ const YourComponent: React.FC = () => {
     const [showMenu, setShowMenu] = useState(false);
     const toggleDropMenu = () => {
         setShowMenu(!showMenu)
+    }
+
+    //if we have an error we return it here...
+    if(error){
+        return <div>Error: {error}</div>;
     }
 
     return (
@@ -50,30 +56,35 @@ const YourComponent: React.FC = () => {
             {/*the next part contains the carts that brings the flag and part of 
             the information of the countries...*/}
             <div className='py-6 flex items-center justify-center flex-wrap gap-9'>
-                {data && data.map((country:any) => (
-                    <Link to={`/country/${country.cca3}`}>
-                        <div key={country.cca3} className='bg-white dark:bg-gray-800 w-300 h-cartH rounded flex flex-col items-center justify-center shadow-sm cursor-pointer dark:border-gray-600'>
-                            <div className='w-all h-half'>
-                                <img src={country.flags.png}
-                                    alt={country.name.common}
-                                    className='w-full h-full object-cover'
-                                />
-                            </div>
-                            <div className='w-all h-half'>
-                                <div className='w-all py-5'>
-                                    <h3 className='ml-7 font-bold text-titleCountry dark:text-white'>{country.name.common}</h3>
+                {loading ? (
+                    //we show 8 repetitions of the skeleton...
+                    Array.from({ length: 8 }, (_, index) => <CountrySkeleton key={index} />)
+                ) : (
+                    data && data.map((country:any) => (
+                        <Link to={`/country/${country.cca3}`}>
+                            <div key={country.cca3} className='bg-white dark:bg-gray-800 w-300 h-cartH rounded flex flex-col items-center justify-center shadow-sm cursor-pointer dark:border-gray-600'>
+                                <div className='w-all h-half'>
+                                    <img src={country.flags.png}
+                                        alt={country.name.common}
+                                        className='w-full h-full object-cover'
+                                    />
                                 </div>
-                                <div className='w-all h-auto'>
-                                    <ul className='w-all h-auto text-gray-900 dark:text-white'>
-                                        <li className='ml-7 py-1 font-semibold'>Population: <span className='font-thin'>{country.population}</span></li>
-                                        <li className='ml-7 py-1 font-semibold'>Region: <span className='font-thin'>{country.region}</span></li>
-                                        <li className='ml-7 py-1 font-semibold'>Capital: <span className='font-thin'>{country.capital}</span></li>
-                                    </ul>
+                                <div className='w-all h-half'>
+                                    <div className='w-all py-5'>
+                                        <h3 className='ml-7 font-bold text-titleCountry dark:text-white'>{country.name.common}</h3>
+                                    </div>
+                                    <div className='w-all h-auto'>
+                                        <ul className='w-all h-auto text-gray-900 dark:text-white'>
+                                            <li className='ml-7 py-1 font-semibold'>Population: <span className='font-thin'>{country.population}</span></li>
+                                            <li className='ml-7 py-1 font-semibold'>Region: <span className='font-thin'>{country.region}</span></li>
+                                            <li className='ml-7 py-1 font-semibold'>Capital: <span className='font-thin'>{country.capital}</span></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </Link>
-                ))}
+                        </Link>
+                    ))
+                )}
             </div>
         </section>
     )

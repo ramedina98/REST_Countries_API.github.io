@@ -12,7 +12,7 @@ const [data, setData] = useState<DataItem[]>([]);
 
 const peticionGet = async () => {
     try {
-        const response = await fetch("https://ramedina98.github.io/api_nat/dataBankLinks.json");
+        const response = await fetch("https://ramedina98.github.io/api_nat/countriesFooter.json");
         if (!response.ok) {
             throw new Error('Network response was not ok.');
         }

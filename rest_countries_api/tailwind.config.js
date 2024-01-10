@@ -28,7 +28,8 @@ export default {
       },
       screens: {
         'custom-md': '728px',
-        '635':'635px'
+        '635':'635px',
+        'header': '448px'
       },
       fontSize: {
         'titleCountry': '1.3em',

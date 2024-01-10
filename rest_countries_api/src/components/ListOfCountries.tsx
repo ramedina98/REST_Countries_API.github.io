@@ -50,9 +50,11 @@ const YourComponent: React.FC = () => {
     
     //code needed to show and hide the drop menu...
     const [showMenu, setShowMenu] = useState(false);
+    //toggle drop down menu...
     const toggleDropMenu = () => {
         setShowMenu(!showMenu)
     }
+
     //search for a country...
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState<CountryData[]>([]);
@@ -122,7 +124,7 @@ const YourComponent: React.FC = () => {
                 </div>
                 {showMenu && (
                     /*this is the drop down menu item*/
-                    <div className='absolute top-20 right-0 custom-md:w-200 w-all h-auto bg-white border-b border-gray-300 dark:border-gray-600'>
+                    <div className='absolute top-40 custom-md:top-20 right-0 custom-md:w-200 w-all h-auto bg-white border-b border-gray-300 dark:border-gray-600'>
                         <ul className='custom-md:w-200 w-all p-2 h-auto flex items-start justify-evenly flex-col text-gray-900 font-semibold dark:bg-gray-800 dark:text-white'>
                             <li onClick={handleClick} className='hover:bg-gray-100 w-all py-1 pl-2 cursor-pointer dark:hover:bg-gray-600'>Africa</li>
                             <li onClick={handleClick} className='hover:bg-gray-100 w-all py-1 pl-2 cursor-pointer dark:hover:bg-gray-600'>America</li>

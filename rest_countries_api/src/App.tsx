@@ -17,6 +17,20 @@ function App() {
     return storedDarkMode ? JSON.parse(storedDarkMode) : false;
   });
 
+  //
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      setIsDark(e.matches);
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange);
+    };
+  }, []);
   //changes the classes in the html element when the dark mode state changes
   useEffect(() => {
     const htmElement = document.querySelector('html');
@@ -55,12 +69,12 @@ function App() {
 
   return (
     <>
-      <header className='bg-white py-5 shadow-md dark:bg-gray-800 flex items-center justify-between'>
+      <header className='bg-white py-5 shadow-md dark:bg-gray-800 flex items-center justify-between flex-wrap gap-1'>
         {/*main title of the page... */}
         <div className='ml-3 py-3 px-3'>
-          <h1 className='text-gray-900 text-2xl font-bold dark:text-white'>
+          <div className='text-gray-900 text-2xl font-bold dark:text-white'>
             Where in the world?
-          </h1>
+          </div>
         </div>
         {/*Here we have the button that change switches between leght and dark mode...*/}
         <div className='mr-2 p-3 flex items-center justify-between'>

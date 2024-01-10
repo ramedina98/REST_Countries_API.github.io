@@ -1,10 +1,9 @@
 /*here we have to buil all the main structure 
 of the app...*/
 //import { useState } from 'react'
-import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import { Outlet} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '@fortawesome/fontawesome-free/css/all.min.css'; 
-import Countries from './components/ListOfCountries.tsx'; 
-import Country from './components/Country.tsx';
 import OtherNav from './components/OtherNav.tsx';
 import { useEffect, useState } from 'react';
 
@@ -72,9 +71,9 @@ function App() {
       <header className='bg-white py-5 shadow-md dark:bg-gray-800 flex items-center justify-between flex-wrap gap-1'>
         {/*main title of the page... */}
         <div className='ml-3 py-3 px-3'>
-          <div className='text-gray-900 text-2xl font-bold dark:text-white'>
+          <Link  to="/" className='text-gray-900 text-2xl font-bold dark:text-white'>
             Where in the world?
-          </div>
+          </Link>
         </div>
         {/*Here we have the button that change switches between leght and dark mode...*/}
         <div className='mr-2 p-3 flex items-center justify-between'>
@@ -95,12 +94,7 @@ function App() {
       </header>
       {/*Here are the two main components...*/}
       <main className='bg-gray-100 py-5 px-4 dark:bg-gray-700'>
-        <Router>
-          <Routes>
-            <Route path='/' element={<Countries/>}/>
-            <Route path='/country/:id' element={<Country/>}/>
-          </Routes>
-        </Router>
+        <Outlet />
       </main>
       {/*every page needs its footer*/}
       {/*TODO: Hay que buscar si hay recursos en internet para ver y desarrollar

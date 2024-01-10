@@ -10,8 +10,14 @@ import { useEffect, useState } from 'react';
 
 function App() {
   
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(() => {
+    //checks if there is a satus stored in localStorage and returns it, 
+    //otherwise it returns false by default...
+    const storedDarkMode = localStorage.getItem('darkMode');
+    return storedDarkMode ? JSON.parse(storedDarkMode) : false;
+  });
 
+  //changes the classes in the html element when the dark mode state changes
   useEffect(() => {
     const htmElement = document.querySelector('html');
 
@@ -26,8 +32,25 @@ function App() {
     }
   }, [isDark])
 
+  //store the dark mode status in localstorage each time...
+  useEffect(() => {
+    localStorage.setItem('darkMode', JSON.stringify(isDark));
+  }, [isDark]);
+
+  //
   const toggleDarkMode = () => {
     setIsDark(!isDark);
+  }
+  //upward
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // smooth
+    });
+  };
+  //handle upward...
+  const handleUpWard = () => {
+    scrollToTop();
   }
 
   return (
@@ -69,6 +92,14 @@ function App() {
       {/*TODO: Hay que buscar si hay recursos en internet para ver y desarrollar
       un muy buen footer para esta pagina...*/}
       <footer>
+        {/*this is a button to return upwards*/}
+        <div className='py-4 w-all mt-2 flex justify-center items-center'>
+          <button onClick={handleUpWard} className='bg-white py-3 w-1/2 rounded border border-gray-100 flex items-center justify-evenly font-bold text-gray-800 text-xl tracking-wider hover:bg-black hover:text-white hover:border-white'>
+            <i className='bx bx-chevron-up font-semibold text-xl'></i>
+            Upward
+            <i className='bx bx-chevron-up font-semibold text-xl'></i>
+          </button>
+        </div>
         <div className='cont_cards_nav'>
           <OtherNav/>
         </div>

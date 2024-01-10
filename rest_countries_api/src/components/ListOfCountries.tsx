@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'; //TODO:borrar lo que no se ocupe...
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import CountrySkeleton from './countrySkeleton';
 import useCountryData from '../utils/useApiData';
-import ScrollToTopOnMount from '../utils/scrollToTop.tsx';
 
+//interface for country data...
 interface CountryData {
     altSpellings: string[];
     area: number;
@@ -38,10 +38,15 @@ interface CountryData {
 }
 
 const YourComponent: React.FC = () => {
-    //to the top...
-    ScrollToTopOnMount();
-    //TODO: el codigo que esta debajo es para consumir la api...
+    //we consume the API of countries...
     const { data, loading, error } = useCountryData(); 
+
+    //go to the top...
+    const scrollToTop = () => {
+        window.scrollTo(0,0);
+    };
+    //upward
+    scrollToTop()
     
     //code needed to show and hide the drop menu...
     const [showMenu, setShowMenu] = useState(false);
@@ -52,6 +57,7 @@ const YourComponent: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState<CountryData[]>([]);
 
+    //we update the status of the search term...
     useEffect(() => {
         if (searchTerm.trim() !== '') {
             const results = data?.filter((country) =>
@@ -63,17 +69,20 @@ const YourComponent: React.FC = () => {
         }
     }, [searchTerm, data]);
 
+    //this function recives the content that the user types in the input... 
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     }; 
 
-    const filteredCountries: CountryData[] = data
-        ? data.filter((country: CountryData) =>
-            country.name.common.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-        : [];
+    //we filter by country and region...
+    const filteredCountries: CountryData[] = data ? data.filter((country: CountryData) => {
+        const nameMatch = country.name.common.toLowerCase().includes(searchTerm.toLowerCase());
+        const regionMatch = country.region.toLowerCase().includes(searchTerm.toLowerCase());
+        return nameMatch || regionMatch;
+    }) : [];
 
     //searh for a country by region...
+    //this function detect which li tag clicked the user...
     const handleClick = (event: React.MouseEvent<HTMLLIElement>) => {
         const clickedLi = event.target as HTMLLIElement;
         if(clickedLi.textContent !== null){
@@ -118,8 +127,8 @@ const YourComponent: React.FC = () => {
                             <li onClick={handleClick} className='hover:bg-gray-100 w-all py-1 pl-2 cursor-pointer dark:hover:bg-gray-600'>Africa</li>
                             <li onClick={handleClick} className='hover:bg-gray-100 w-all py-1 pl-2 cursor-pointer dark:hover:bg-gray-600'>America</li>
                             <li onClick={handleClick} className='hover:bg-gray-100 w-all py-1 pl-2 cursor-pointer dark:hover:bg-gray-600'>Asia</li>
-                            <li onClick={handleClick} className='hover:bg-gray-100 w-all py-1 pl-2 cursor-pointer dark:hover:bg-gray-600'>Europa</li>
-                            <li onClick={handleClick} className='hover:bg-gray-100 w-all py-1 pl-2 cursor-pointer dark:hover:bg-gray-600'>Ociania</li>
+                            <li onClick={handleClick} className='hover:bg-gray-100 w-all py-1 pl-2 cursor-pointer dark:hover:bg-gray-600'>Europe</li>
+                            <li onClick={handleClick} className='hover:bg-gray-100 w-all py-1 pl-2 cursor-pointer dark:hover:bg-gray-600'>Oceania</li>
                         </ul>
                     </div>
                 )}

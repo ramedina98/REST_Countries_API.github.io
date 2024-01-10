@@ -3,13 +3,18 @@ import useCountryData from '../utils/useApiData';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import ScrollToTopOnMount from '../utils/scrollToTop.tsx';
 import CountryInfoSkeleton from './infoCountrySkeleton.tsx';
 
 const YourComponent: React.FC = () => {
-    //to the top...
-    ScrollToTopOnMount();
+    //go to the top...
+    const scrollToTop = () => {
+        window.scrollTo(0, 0);
+    };
+    //upward
+    scrollToTop();
+
     const navigate = useNavigate();
+
     //go back btn function...
     const handleGoBack = () => {
         navigate(-1);
@@ -20,10 +25,13 @@ const YourComponent: React.FC = () => {
     
     //function to search for a specific country...
     const { searchByCca3, loading, error } = useCountryData();
+
     //we get the id fromt the url...
     const { id } = useParams<{id:string}>();
+
     //we are looking for a specific country...
     const country = id ? searchByCca3(id):null;
+
     //this is function helps us to better obtain the information about the currency or currencies used in the country...
     useEffect(() => {
         if (country?.currencies) {
@@ -35,6 +43,7 @@ const YourComponent: React.FC = () => {
             setCurrencyNames(names);
         }
     }, [country?.currencies]);
+
     //Laguages...
     useEffect(() => {
         if (country?.languages) {
@@ -46,6 +55,7 @@ const YourComponent: React.FC = () => {
             setLagagues(laguages);
         }
     }, [country?.languages]);
+
     //format the array to be a string...
     const formatString = (name:string[]): string => {
         return name.join(', ');

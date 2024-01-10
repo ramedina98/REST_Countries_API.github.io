@@ -15,7 +15,8 @@ export default {
         '400': '400px',
         '500': '500px',
         'bigFlag':'610px',
-        'infoDiv': '650px'
+        'infoDiv': '650px', 
+        'list':'300px'
       },
       height: {
         'bigFlag':'410px',
@@ -26,7 +27,8 @@ export default {
         'half': '50%'
       },
       screens: {
-        'custom-md': '728px', // Define tu propio breakpoint en 688px
+        'custom-md': '728px',
+        '635':'635px'
       },
       fontSize: {
         'titleCountry': '1.3em',

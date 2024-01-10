@@ -1,17 +1,87 @@
 import React, { useState, useEffect } from 'react'; //TODO:borrar lo que no se ocupe...
 import { Link } from 'react-router-dom';
 import CountrySkeleton from './countrySkeleton';
-import useCountryData from '../hooks/useApiData';
+import useCountryData from '../utils/useApiData';
+import ScrollToTopOnMount from '../utils/scrollToTop.tsx';
+
+interface CountryData {
+    altSpellings: string[];
+    area: number;
+    borders: string[];
+    capital: string[];
+    cca2: string;
+    cca3: string;
+    ccn3: string;
+    coatOfArms: { png: string; svg: string };
+    continents: string[];
+    currencies: { [key: string]: { name: string; symbol: string } };
+    demonyms: { [key: string]: unknown };
+    flag: string;
+    flags: { png: string; svg: string };
+    idd: { root: string; suffixes: string[] };
+    independent: boolean;
+    landlocked: boolean;
+    languages: { [key: string]: string };
+    latlng: number[];
+    maps: { googleMaps: string; openStreetMaps: string };
+    name: { common: string; official: string; nativeName: { [key: string]: { official: string; common: string } } };
+    population: number;
+    postalCode: { format: string; regex: string };
+    region: string;
+    startOfWeek: string;
+    status: string;
+    subregion: string;
+    timezones: string[];
+    tld: string[];
+    translations: { [key: string]: { official: string; common: string } };
+    unMember: boolean;
+}
 
 const YourComponent: React.FC = () => {
+    //to the top...
+    ScrollToTopOnMount();
     //TODO: el codigo que esta debajo es para consumir la api...
-    const { data, loading, error} = useCountryData(); 
+    const { data, loading, error } = useCountryData(); 
     
     //code needed to show and hide the drop menu...
     const [showMenu, setShowMenu] = useState(false);
     const toggleDropMenu = () => {
         setShowMenu(!showMenu)
     }
+    //search for a country...
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchResults, setSearchResults] = useState<CountryData[]>([]);
+
+    useEffect(() => {
+        if (searchTerm.trim() !== '') {
+            const results = data?.filter((country) =>
+                country.name.common.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            setSearchResults(results || []);
+        } else {
+            setSearchResults(data || []);
+        }
+    }, [searchTerm, data]);
+
+    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
+    }; 
+
+    const filteredCountries: CountryData[] = data
+        ? data.filter((country: CountryData) =>
+            country.name.common.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        : [];
+
+    //searh for a country by region...
+    const handleClick = (event: React.MouseEvent<HTMLLIElement>) => {
+        const clickedLi = event.target as HTMLLIElement;
+        if(clickedLi.textContent !== null){
+            setSearchTerm(clickedLi.textContent);
+        } else{
+            console.log('Text null');
+        }
+    };
 
     //if we have an error we return it here...
     if(error){
@@ -32,6 +102,7 @@ const YourComponent: React.FC = () => {
                         className="py-4 px-3 w-5/6 h-5/6 text-gray-700 dark:text-white leading-tight focus:outline-none focus:shadow-outline bg-transparent"
                         placeholder="Example text with button addon"
                         aria-describedby="button-addon1"
+                        onChange={handleSearch}
                     />
                 </div>
                 {/*Here we have the drop down menu deployer...*/}
@@ -44,11 +115,11 @@ const YourComponent: React.FC = () => {
                     /*this is the drop down menu item*/
                     <div className='absolute top-20 right-0 custom-md:w-200 w-all h-auto bg-white border-b border-gray-300 dark:border-gray-600'>
                         <ul className='custom-md:w-200 w-all p-2 h-auto flex items-start justify-evenly flex-col text-gray-900 font-semibold dark:bg-gray-800 dark:text-white'>
-                            <li className='hover:bg-gray-100 w-all py-1 pl-2 cursor-pointer dark:hover:bg-gray-600'>Africa</li>
-                            <li className='hover:bg-gray-100 w-all py-1 pl-2 cursor-pointer dark:hover:bg-gray-600'>America</li>
-                            <li className='hover:bg-gray-100 w-all py-1 pl-2 cursor-pointer dark:hover:bg-gray-600'>Asia</li>
-                            <li className='hover:bg-gray-100 w-all py-1 pl-2 cursor-pointer dark:hover:bg-gray-600'>Europa</li>
-                            <li className='hover:bg-gray-100 w-all py-1 pl-2 cursor-pointer dark:hover:bg-gray-600'>Ociania</li>
+                            <li onClick={handleClick} className='hover:bg-gray-100 w-all py-1 pl-2 cursor-pointer dark:hover:bg-gray-600'>Africa</li>
+                            <li onClick={handleClick} className='hover:bg-gray-100 w-all py-1 pl-2 cursor-pointer dark:hover:bg-gray-600'>America</li>
+                            <li onClick={handleClick} className='hover:bg-gray-100 w-all py-1 pl-2 cursor-pointer dark:hover:bg-gray-600'>Asia</li>
+                            <li onClick={handleClick} className='hover:bg-gray-100 w-all py-1 pl-2 cursor-pointer dark:hover:bg-gray-600'>Europa</li>
+                            <li onClick={handleClick} className='hover:bg-gray-100 w-all py-1 pl-2 cursor-pointer dark:hover:bg-gray-600'>Ociania</li>
                         </ul>
                     </div>
                 )}
@@ -56,17 +127,48 @@ const YourComponent: React.FC = () => {
             {/*the next part contains the carts that brings the flag and part of 
             the information of the countries...*/}
             <div className='py-6 flex items-center justify-center flex-wrap gap-9'>
-                {loading ? (
-                    //we show 8 repetitions of the skeleton...
-                    Array.from({ length: 8 }, (_, index) => <CountrySkeleton key={index} />)
+                {/*we chech if searchTerm is empty or not...*/}
+                {searchTerm === '' ? (
+                    /*skeletons for data loading...*/
+                    loading ? (
+                        //we show 8 repetitions of the skeleton...
+                        Array.from({ length: 8 }, (_, index) => <CountrySkeleton key={index} />)
+                    ) : (
+                        /*uploaded data... */
+                        data && data.map((country:any) => (
+                            <Link to={`/country/${country.cca3}`} key={country.cca3}>
+                                <div className='bg-white dark:bg-gray-800 w-300 h-cartH rounded flex flex-col items-center justify-center shadow-sm cursor-pointer dark:border-gray-600'>
+                                    <div className='w-all h-half dark:border-gray-700 border-gray-100 border-b shadow-sm'>
+                                        <img src={country.flags.png}
+                                            alt={country.name.common}
+                                            className='w-full h-full object-contain'
+                                        />
+                                    </div>
+                                    <div className='w-all h-half'>
+                                        <div className='w-all py-5'>
+                                            <h3 className='ml-7 font-bold text-titleCountry dark:text-white'>{country.name.common}</h3>
+                                        </div>
+                                        <div className='w-all h-auto'>
+                                            <ul className='w-all h-auto text-gray-900 dark:text-white'>
+                                                <li className='ml-7 py-1 font-semibold'>Population: <span className='font-thin'>{country.population}</span></li>
+                                                <li className='ml-7 py-1 font-semibold'>Region: <span className='font-thin'>{country.region}</span></li>
+                                                <li className='ml-7 py-1 font-semibold'>Capital: <span className='font-thin'>{country.capital}</span></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Link>
+                        ))
+                    )
                 ) : (
-                    data && data.map((country:any) => (
-                        <Link to={`/country/${country.cca3}`}>
-                            <div key={country.cca3} className='bg-white dark:bg-gray-800 w-300 h-cartH rounded flex flex-col items-center justify-center shadow-sm cursor-pointer dark:border-gray-600'>
-                                <div className='w-all h-half'>
+                    //input search results...
+                    filteredCountries.map((country: CountryData) => (
+                        <Link to={`/country/${country.cca3}`} key={country.cca3}>
+                            <div className='bg-white dark:bg-gray-800 w-300 h-cartH rounded flex flex-col items-center justify-center shadow-sm cursor-pointer dark:border-gray-600'>
+                                <div className='w-all h-half dark:border-gray-700 border-gray-100 border-b shadow-sm'>
                                     <img src={country.flags.png}
                                         alt={country.name.common}
-                                        className='w-full h-full object-cover'
+                                        className='w-full h-full object-contain'
                                     />
                                 </div>
                                 <div className='w-all h-half'>

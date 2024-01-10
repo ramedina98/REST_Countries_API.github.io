@@ -9,7 +9,7 @@ import OtherNav from './components/OtherNav.tsx';
 import { useEffect, useState } from 'react';
 
 function App() {
-
+  
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {

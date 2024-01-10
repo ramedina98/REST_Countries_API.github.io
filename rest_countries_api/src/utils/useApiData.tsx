@@ -3,13 +3,14 @@ import { useState, useEffect } from "react";
 interface CountryData {
     altSpellings: string[];
     area: number;
+    borders: string[];
     capital: string[];
     cca2: string;
     cca3: string;
     ccn3: string;
     coatOfArms: { png: string; svg: string };
     continents: string[];
-    currencies: { [key: string]: unknown };
+    currencies: { [key: string]: { name: string; symbol: string } };
     demonyms: { [key: string]: unknown };
     flag: string;
     flags: { png: string; svg: string };
@@ -60,8 +61,8 @@ const useCountryData = () => {
         if(!data) return undefined;
         return data.find((country: CountryData) => country.cca3.toUpperCase() === code);
     }
-
-    return { data, loading, error, searchByCca3};
+    
+    return { data, loading, error, searchByCca3 };
 };
 
 export default useCountryData;

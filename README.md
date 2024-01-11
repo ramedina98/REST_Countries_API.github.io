@@ -1,30 +1,27 @@
-# React + TypeScript + Vite
+# REST Countries API Explorer project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## TypeScript React Tailwind App
 
-Currently, two official plugins are available:
+This project, developed with **React and TypeScript using Vite**, uses the Rest Countries API to provide essential information about countries around the world. The intuitive interface provides key data, such as the flag, name, capital, population and continent of each country. Clicking on the information container takes you to a detailed component that displays additional information, such as currency, domain, languages, and sub-region.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Key Features
+**User Friendly Interface:** Simple navigation and intuitive design to access detailed information for each country.
+**Efficient Search:** Search functionality by name and filtering by continent for a personalized experience.
+**Consistent Styles:** Consistent and attractive design thanks to the use of Tailwind CSS for style development.
+Key Dependencies
+**FontAwesome:** Used for icons, providing a visually appealing interface.
+**Bootstrap:** Provides additional components and styles to enhance the presentation.
+**React Router DOM:** Facilitates navigation management in the React application.
 
-## Expanding the ESLint configuration
+### Development Dependencies
+**TypeScript and ESLint:** Ensure robust code and secure typing.
+**Tailwind CSS:**  Utility framework for rapid development and efficient style maintenance.
+**Vite:** Rapid build and development tool for modern web applications.
+* Scripts
+  * npm run dev: Launches the Vite development environment.
+  * npm run build: Compiles the project and prepares the files for deployment.
+  * npm run lint: Performs a static analysis of the code for possible problems.
+  * npm run preview: Previews the application before deploying it.
+  * npm run deploy: Deploys the application to GitHub Pages, based on the gh-pages configuration.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+**Site URL:** https://ramedina98.github.io/rest_countries_api/
